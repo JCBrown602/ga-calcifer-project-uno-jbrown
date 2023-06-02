@@ -58,6 +58,7 @@ ga-calcifer-project-uno-jbrown
 	- Fourth betting round
 	- Showdown (if necessary)
 	- Continue?
+		- This is at any point, not necessarily after 4 betting rounds
 
 #### Other Methods
 - Shuffle
