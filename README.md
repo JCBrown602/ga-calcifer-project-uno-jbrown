@@ -3,8 +3,10 @@ ga-calcifer-project-uno-jbrown
 
 # WIREFRAME
 ## Choice of Game
+Classic Texas Hold'Em Poker
 
 ## Wireframe of "main" game screen
+![Main Game Screen](poker-wireframe.png)
 
 ## Pseudocode for overall game play
 ### Variables
@@ -68,12 +70,14 @@ ga-calcifer-project-uno-jbrown
 	(Mexico governed Texas at that time and had strong influence afterwards)
 - Betting
 	- Controlled/initiated by Dealer method
+	- Validation
 	- Betting round continues until:
 		- Every player has folded, or
 		- A player puts in all of their chips (need to clarify), or
 		- Matched the amount put in by other players (ie everyone's at $100)
 - Dealer
 	- Deal 2 cards to each player (hole/pocket cards)
+	- Ask for bet
 
 ## Icebox
 
