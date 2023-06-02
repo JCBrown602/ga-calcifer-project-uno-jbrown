@@ -1,2 +1,2 @@
-# ga-calcifer-project-uno-jbrown
-Project 1 for General Assembly SEIR Calcifer
+# Project 1 for General Assembly SEIR Calcifer
+ga-calcifer-project-uno-jbrown
