@@ -1,0 +1,28 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  main {
+    display: grid;
+    grid-template-columns: 35vmin 15vmin 35vmin;
+    grid-template-rows: 10vmin 10vmin 35vmin 15vmin;
+  }
+  
+  main * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .flex-ctr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
