@@ -9,23 +9,23 @@ const faceValues =
 for(let i = 0; i < 14; i++) {
     faceValues[i] = i;
 }
-console.log(faceValues);
+//console.log(faceValues);
 
 let deck = [];
 
 faceNames.forEach((faceName, idx) => {
-    console.log(`${faceName}`);
+    //console.log(`${faceName}`);
     suits.forEach((suit) => {
         let newCard = {};
         newCard.faceName = faceName;
         newCard.faceValue = idx + 1;
         newCard.suit = suit;
-        console.log("===============");
-        console.log(`newCard.faceName - ${newCard.faceName}`);
-        console.log(`faceName - ${faceName}`);
-        console.log(`suit - ${suit}`);
-        console.log(`faceValue - ${faceValues[idx + 1]}`);
-        console.log(newCard);
+        // console.log("===============");
+        // console.log(`newCard.faceName - ${newCard.faceName}`);
+        // console.log(`faceName - ${faceName}`);
+        // console.log(`suit - ${suit}`);
+        // console.log(`faceValue - ${faceValues[idx + 1]}`);
+        // console.log(newCard);
         deck.push(newCard);
     });
 });
@@ -53,6 +53,14 @@ let players = [
         "hand": []
     }
 ]
+// Special Player is dealt 3 cards face up, then 2 rounds of dealing a single card
+let communityPile = [
+    {
+        "name": "Community Pile",
+        "score": 0,
+        "hand": []  // What cards is this player holding
+    }
+]
 /*----- app's state (variables) -----*/
 
 /*----- cached element references -----*/
@@ -77,33 +85,51 @@ function init() {
 
     // Shuffle cards
     shuffle(deck);
+    console.log("Every day I'm ");
+    shuffle(deck);
+    shuffle(deck);
     console.log(deck.slice(0,5));
 
     // Deal cards (first two)
     console.log("The players currently have:");
-    showPlayerHands();
+    showCards(players);
 
     console.log(`Cards remaining in deck: ${deck.length}`);
-    dealCards();
+    dealCards(players);
 
     console.log(`Cards remaining in deck: ${deck.length}`);
-    dealCards();
+    dealCards(players);
 
     console.log(`Cards remaining in deck: ${deck.length}`);
-    showPlayerHands();
+    showCards(players);
 
     // Betting rounds
-    console.log(`BETTING BEGINS with ${deck.length} cards in the deck.`)
-    dealCards();
-    showPlayerHands();
+    console.log(`BETTING BEGINS with ${deck.length} cards in the deck.`);
     render();
+    // Call, Raise, or Fold
+
+    // The Flop (burn a card)
+    console.log("The Flop.");
+    for(let i = 0; i < 3; i++) { dealCards(communityPile); }
+    // Call, Raise, or Fold
+
+    // The Turn
+    dealCards(communityPile);
+    // Call, Raise, or Fold
+
+    // The River
+    dealCards(communityPile);
+    // Call, Raise, or Fold
+
+    showCards(communityPile);
+
 };
 
 // Dealer?
 
 // Shuffle deck
 function shuffle(){
-    console.log("Shuffling...");
+    console.log("\tShuffling...");
     for(let i = 0; i < 52; i ++) {
         let tempCard = deck[i];
         let randNum = Math.floor(Math.random() * 52);
@@ -113,16 +139,14 @@ function shuffle(){
     return deck;
 }
 // Deal cards
-function dealCards() {
+function dealCards(players) {
     console.log("Dealing...");
     for(let i = 0; i < players.length; i++) {
         let cardToDeal = deck.pop();
-        console.log(`cardToDeal: ${cardToDeal.faceName} of ${cardToDeal.suit}`);
-        //console.log(`${players[i].name} 
-        //    - ${players[i].hand.length} - ${cardToDeal.face} of ${cardToDeal.suit}`);
+        //console.log(`cardToDeal: ${cardToDeal.faceName} of ${cardToDeal.suit}`);
         players[i].hand.push(cardToDeal);
-        console.log(`players[i] === ${players[i].name}
-             got a ${cardToDeal.faceName} of ${cardToDeal.suit} (${cardToDeal.faceValue} pts)`);
+        //console.log(`players[i] === ${players[i].name}
+        //     got a ${cardToDeal.faceName} of ${cardToDeal.suit} (${cardToDeal.faceValue} pts)`);
     }
     //console.log(players);
     return players;
@@ -130,9 +154,11 @@ function dealCards() {
 
 // Betting
 
-// Scorekeeper
+// Win Condition / Scorekeeper
 
-function showPlayerHands() {
+
+// ICEBOX: If all the player hands are empty, just say so
+function showCards(players) {
     // Loop through any number of players
     players.forEach((player) => {
         console.log(`${player.name} has `);
