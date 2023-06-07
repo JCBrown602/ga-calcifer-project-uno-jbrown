@@ -5,14 +5,12 @@ const values =
     ['A','2','3','4','5','6','7','8','9','10','Jack','Queen','King'];
 let deck = [];
 values.forEach((value) => {
-    let newCard = new Object();
-    newCard.value = value;
-    suits.forEach((suit, index, array) => {
-        console.log(`Suit: ${suit} \tIndex: ${index} \tArray: ${array} `);
+    suits.forEach((suit) => {
+        let newCard = {};
+        newCard.value = value;
         newCard.suit = suit;
         deck.push(newCard);
     });
-    console.log(newCard);
 });
 
 let player = [
