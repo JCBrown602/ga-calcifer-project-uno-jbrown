@@ -1,15 +1,31 @@
 ////////////// (MODEL) Data / State
 /*----- constants -----*/
-// Build deck: 52 cards, 13 face values, 4 suits
+// Build deck: 52 cards, 4 suits, 14 face names, 14 face values]
 const suits = ['Clubs','Diamonds','Hearts','Spades'];
-const faces = 
+const faceNames =
     ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King'];
+const faceValues =
+    [];
+for(let i = 0; i < 14; i++) {
+    faceValues[i] = i;
+}
+console.log(faceValues);
+
 let deck = [];
-faces.forEach((face) => {
+
+faceNames.forEach((faceName, idx) => {
+    console.log(`${faceName}`);
     suits.forEach((suit) => {
         let newCard = {};
-        newCard.face = face;
+        newCard.faceName = faceName;
+        newCard.faceValue = idx + 1;
         newCard.suit = suit;
+        console.log("===============");
+        console.log(`newCard.faceName - ${newCard.faceName}`);
+        console.log(`faceName - ${faceName}`);
+        console.log(`suit - ${suit}`);
+        console.log(`faceValue - ${faceValues[idx + 1]}`);
+        console.log(newCard);
         deck.push(newCard);
     });
 });
@@ -19,22 +35,22 @@ let players = [
     {
         "name": "Player",
         "score": 0,
-        "hand": [{face: 'Ace', suit: 'Spades'}, {face: 'Ace', suit: 'Hearts'}]  // What cards is this player holding
+        "hand": []  // What cards is this player holding
     },
     {
         "name": "Computer1",
         "score": 0,
-        "hand": [{face: 'Ace', suit: 'Spades'}, {face: 'Ace', suit: 'Hearts'}]
+        "hand": []
     },
     {
         "name": "Computer2",
         "score": 0,
-        "hand": [{face: 'Ace', suit: 'Spades'}, {face: 'Ace', suit: 'Hearts'}]
+        "hand": []
     },
     {
         "name": "Computer3",
         "score": 0,
-        "hand": [{face: 'Ace', suit: 'Spades'}, {face: 'Ace', suit: 'Hearts'}]
+        "hand": []
     }
 ]
 /*----- app's state (variables) -----*/
@@ -51,18 +67,35 @@ function render() {
 /*----- functions -----*/
 function init() {
     console.log("Init...");
-    // Players have zero cards
+
+    // Make sure players have zero cards
+    players.forEach((player) => {
+        player.hand = [];
+    })
     console.log("The starting deck:");
     console.log(deck.slice(0,5));
+
     // Shuffle cards
     shuffle(deck);
     console.log(deck.slice(0,5));
+
     // Deal cards (first two)
     console.log("The players currently have:");
     showPlayerHands();
+
+    console.log(`Cards remaining in deck: ${deck.length}`);
+    dealCards();
+
+    console.log(`Cards remaining in deck: ${deck.length}`);
+    dealCards();
+
+    console.log(`Cards remaining in deck: ${deck.length}`);
+    showPlayerHands();
+
+    // Betting rounds
+    console.log(`BETTING BEGINS with ${deck.length} cards in the deck.`)
     dealCards();
     showPlayerHands();
-    // Betting rounds
     render();
 };
 
@@ -84,12 +117,14 @@ function dealCards() {
     console.log("Dealing...");
     for(let i = 0; i < players.length; i++) {
         let cardToDeal = deck.pop();
-        console.log(`${players[i].name} 
-            - ${players[i].hand.length} - ${cardToDeal.face} of ${cardToDeal.suit}`);
+        console.log(`cardToDeal: ${cardToDeal.faceName} of ${cardToDeal.suit}`);
+        //console.log(`${players[i].name} 
+        //    - ${players[i].hand.length} - ${cardToDeal.face} of ${cardToDeal.suit}`);
         players[i].hand.push(cardToDeal);
-        console.log(players[i]);
+        console.log(`players[i] === ${players[i].name}
+             got a ${cardToDeal.faceName} of ${cardToDeal.suit} (${cardToDeal.faceValue} pts)`);
     }
-    console.log(players);
+    //console.log(players);
     return players;
 }
 
@@ -103,7 +138,7 @@ function showPlayerHands() {
         console.log(`${player.name} has `);
         // Loop through any number of cards
         player.hand.forEach((card) => {
-            console.log(`\t${card.face} of ${card.suit}`)
+            console.log(`\t${card.faceName} of ${card.suit}`)
         });
     });
 }
