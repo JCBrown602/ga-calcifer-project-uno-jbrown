@@ -1,18 +1,22 @@
 ////////////// (MODEL) Data / State
 /*----- constants -----*/
-// Build deck: 52 cards, 4 suits, 14 face names, 14 face values]
+// Pieces for building deck: 52 cards, 4 suits, 14 face names, 14 face values]
+// 14 because Ace is special. Starts at 0 but we'll move it up to the top.
+// It starts at 0 just because of indexing. Doing it this way makes the 'face values'
+// line up with their actual integer values with less hassle.
 const suits = ['Clubs','Diamonds','Hearts','Spades'];
 const faceNames =
     ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King'];
-const faceValues =
-    [];
+const faceValues = [];
+
+/*----- app's state (variables) -----*/
+// Build the deck
+let deck = [];
+// Assigning integer values to make scoring hands easier
 for(let i = 0; i < 14; i++) {
     faceValues[i] = i;
 }
-//console.log(faceValues);
-
-let deck = [];
-
+// Assign a 'face value' and a suit to a new card object
 faceNames.forEach((faceName, idx) => {
     //console.log(`${faceName}`);
     suits.forEach((suit) => {
@@ -61,7 +65,6 @@ let communityPile = [
         "hand": []  // What cards is this player holding
     }
 ]
-/*----- app's state (variables) -----*/
 
 /*----- cached element references -----*/
 
@@ -70,6 +73,8 @@ function render() {
     console.log("Render...");
 }; 
 /*----- event listeners -----*/
+// TEMPORARY CONSOLE DRIVER
+
 
 ////////////// (CONTROLLER)
 /*----- functions -----*/
@@ -91,9 +96,6 @@ function init() {
     console.log(deck.slice(0,5));
 
     // Deal cards (first two)
-    console.log("The players currently have:");
-    showCards(players);
-
     console.log(`Cards remaining in deck: ${deck.length}`);
     dealCards(players);
 
@@ -114,15 +116,16 @@ function init() {
     // Call, Raise, or Fold
 
     // The Turn
+    console.log("The Turn.");
     dealCards(communityPile);
     // Call, Raise, or Fold
 
     // The River
+    console.log("The River.");
     dealCards(communityPile);
     // Call, Raise, or Fold
 
     showCards(communityPile);
-
 };
 
 // Dealer?
