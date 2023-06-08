@@ -87,6 +87,7 @@ Classic Texas Hold'Em Poker
 - Use CSS to "tilt" view
 - Add in better art instead of just boxes "representing" cards
 - Scoreboard for multiple games
+- Sort button to sort your cards
 
 ## References
 

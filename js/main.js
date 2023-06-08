@@ -7,7 +7,20 @@
 const suits = ['Clubs','Diamonds','Hearts','Spades'];
 const faceNames =
     ['Ace','2','3','4','5','6','7','8','9','10','Jack','Queen','King'];
-const faceValues = [];
+const faceValues = [];    
+const winningHands = {
+    "Royal Flush": 10,      // Ace, King, Queen, Jack and 10 of the same suit
+    "Straight Flush": 9,    // Five cards of sequential rank, of same suit
+    "Four of a Kind": 8,    // Four of the same rank, "ranked based on highest card in the hand"
+    "Full House": 7,        // Three of one rank, two of another
+    "Flush": 6,             // All the cards are the same suit
+    "Straight": 5,          // Five cards of consecutive rank, ranked by high card
+    "Three of a Kind": 4,   // Three cards of the same rank
+    "Two Pair": 3,          // Two pair of two cards of the same rank
+    "One Pair": 2,          // Um, one pair
+    "High Card": 1          // The player with the highest card in hand wins
+};
+const finalCheck = [];      // Add the Community Pile to each player hand and store in array
 
 /*----- app's state (variables) -----*/
 // Build the deck
@@ -39,21 +52,25 @@ let players = [
     {
         "name": "Player",
         "score": 0,
+        "money": 0,
         "hand": []  // What cards is this player holding
     },
     {
         "name": "Computer1",
         "score": 0,
+        "money": 0,
         "hand": []
     },
     {
         "name": "Computer2",
         "score": 0,
+        "money": 0,
         "hand": []
     },
     {
         "name": "Computer3",
         "score": 0,
+        "money": 0,
         "hand": []
     }
 ]
@@ -113,19 +130,23 @@ function init() {
     // The Flop (burn a card)
     console.log("The Flop.");
     for(let i = 0; i < 3; i++) { dealCards(communityPile); }
+    showCards(communityPile);
     // Call, Raise, or Fold
 
     // The Turn
     console.log("The Turn.");
     dealCards(communityPile);
+    showCards(communityPile);
     // Call, Raise, or Fold
 
     // The River
     console.log("The River.");
     dealCards(communityPile);
+    showCards(communityPile);
     // Call, Raise, or Fold
 
-    showCards(communityPile);
+    checkHands();
+
 };
 
 // Dealer?
@@ -157,17 +178,68 @@ function dealCards(players) {
 
 // Betting
 
+//=========================================================================
 // Win Condition / Scorekeeper
+function buildFinalHand() {
+    players.forEach((player) => {
+        console.log("++++");
+        console.log(`Community Pile: ${communityPile[0].hand.length}`);
+        player.hand = player.hand.concat(communityPile.hand);
+        const newHand = player.hand.concat(communityPile.hand);
+        console.log(`Player: ${player.name}, # of Cards: ${player.hand.length}`);
+        console.log(`Player: ${player.name}, # of Cards: ${newHand.length}`);
+    });
+}
 
+function countSequentialCards(playerHand) {
+    let sequentialCount = 0;
+    // playerHand += communityPile.hand;
+    communityPile[0].hand.forEach((card) => {
+        playerHand.push(card);
+    })
+    console.log(playerHand);
+    
+    // Sort the cards by value in ascending order
+    playerHand.sort((a, b) => a.faceValue - b.faceValue);
+    
+    for (let i = 0; i < playerHand.length - 1; i++) {
+        // Check if the next card's value is one more than the current card's value
+        if (playerHand[i + 1].faceValue - playerHand[i].faceValue === 1) {
+        sequentialCount++;
+        }
+    }
+    return sequentialCount;
+}
+    
+function compareSequentialCards(playerHand1, playerHand2) {
+    const count1 = countSequentialCards(playerHand1);
+    const count2 = countSequentialCards(playerHand2);
+    
+    if (count1 > count2) {
+        return "Player 1 has a higher number of sequential cards.";
+    } else if (count2 > count1) {
+        return "Player 2 has a higher number of sequential cards.";
+    } else {
+        return "Both players have the same number of sequential cards.";
+    }
+}
+//   console.log(compareSequentialCards(playerHand1, playerHand2));
+function checkHands() {
+    //console.log(compareSequentialCards(players[0].hand, players[1].hand));
+    //   console.log(players[0].hand + communityPile);
+    buildFinalHand();
+}
+//=========================================================================
 
 // ICEBOX: If all the player hands are empty, just say so
 function showCards(players) {
     // Loop through any number of players
     players.forEach((player) => {
+        player.hand = player.hand.sort(function(a, b) {return b.faceValue - a.faceValue});
         console.log(`${player.name} has `);
         // Loop through any number of cards
         player.hand.forEach((card) => {
-            console.log(`\t${card.faceName} of ${card.suit}`)
+            console.log(`\t${card.faceName} of ${card.suit} (faceValue: ${card.faceValue})`)
         });
     });
 }
