@@ -46,31 +46,43 @@ faceNames.forEach((faceName, idx) => {
         deck.push(newCard);
     });
 });
+// Find the four aces and change their faceValue from 1 to 14
+let ace;
+for (let i = 0; i < 4; i++) {
+    ace = deck.shift();
+    ace.faceValue = 14;
+    deck.push(ace);
+    // console.log(`Name: ${ace.faceName}, Face Value: ${ace.faceValue}`);
+}
 
 // Players: Player, Computer1, Computer2, etc.
 let players = [
     {
         "name": "Player",
-        "score": 0,
+        "score": 0, // By hand rank
         "money": 0,
+        "numSeq": 0, // Number of sequential cards
         "hand": []  // What cards is this player holding
     },
     {
         "name": "Computer1",
         "score": 0,
         "money": 0,
+        "numSeq": 0,
         "hand": []
     },
     {
         "name": "Computer2",
         "score": 0,
         "money": 0,
+        "numSeq": 0,
         "hand": []
     },
     {
         "name": "Computer3",
         "score": 0,
         "money": 0,
+        "numSeq": 0,
         "hand": []
     }
 ]
@@ -79,6 +91,7 @@ let communityPile = [
     {
         "name": "Community Pile",
         "score": 0,
+        "numSeq": 0,
         "hand": []  // What cards is this player holding
     }
 ]
@@ -183,21 +196,29 @@ function dealCards(players) {
 function buildFinalHand() {
     players.forEach((player) => {
         console.log("++++");
-        console.log(`Community Pile: ${communityPile[0].hand.length}`);
-        player.hand = player.hand.concat(communityPile.hand);
-        const newHand = player.hand.concat(communityPile.hand);
-        console.log(`Player: ${player.name}, # of Cards: ${player.hand.length}`);
-        console.log(`Player: ${player.name}, # of Cards: ${newHand.length}`);
+        communityPile[0].hand.forEach((card) => {
+            player.hand.push(card);
+        });
+        console.log(player.hand);
+    });
+    console.log("++++");
+}
+
+function checkSequential() {
+    players.forEach((player) => {
+        player.numSeq = countSequentialCards(player.hand);
+        console.log(`Player: ${player.name} has 
+            ${player.numSeq} sequential cards.`);
     });
 }
 
 function countSequentialCards(playerHand) {
     let sequentialCount = 0;
     // playerHand += communityPile.hand;
-    communityPile[0].hand.forEach((card) => {
-        playerHand.push(card);
-    })
-    console.log(playerHand);
+    // communityPile[0].hand.forEach((card) => {
+    //     playerHand.push(card);
+    // })
+    // console.log(playerHand);
     
     // Sort the cards by value in ascending order
     playerHand.sort((a, b) => a.faceValue - b.faceValue);
@@ -228,6 +249,7 @@ function checkHands() {
     //console.log(compareSequentialCards(players[0].hand, players[1].hand));
     //   console.log(players[0].hand + communityPile);
     buildFinalHand();
+    checkSequential();
 }
 //=========================================================================
 
@@ -238,9 +260,16 @@ function showCards(players) {
         player.hand = player.hand.sort(function(a, b) {return b.faceValue - a.faceValue});
         console.log(`${player.name} has `);
         // Loop through any number of cards
-        player.hand.forEach((card) => {
-            console.log(`\t${card.faceName} of ${card.suit} (faceValue: ${card.faceValue})`)
-        });
+        try {
+            player.hand.forEach((card) => {
+                console.log(`\t${card.faceName} of ${card.suit} (faceValue: ${card.faceValue})`)
+            });
+        }
+        catch(err) {
+            console.log(`>>> ERROR: ${err}`);
+            console.log(`>>> player.name: ${player.name}`);
+            console.log(`>>> player.hand.length: ${player.hand.length}`);
+        }
     });
 }
 
