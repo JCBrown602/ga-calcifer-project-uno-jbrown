@@ -207,6 +207,7 @@ function buildFinalHand() {
 function checkSequential() {
     players.forEach((player) => {
         player.numSeq = countSequentialCards(player.hand);
+        console.log("--------");
         console.log(`Player: ${player.name} has 
             ${player.numSeq} sequential cards.`);
 
@@ -253,9 +254,10 @@ function checkSuits(playerHand) {
     playerHand.forEach((card) => { sameSuitsArr.push(card.suit)});
     let sameSuits = sameSuitsArr.every(myFunction);
     function myFunction(value) {
-        console.log(`suit: ${value}, playerHand.suit: ${sameSuitsArr}`);
-        return value === playerHand.suit;
+        console.log(`suit: ${value}, playerHand.suit: ${sameSuitsArr[0]}`);
+        return JSON.stringify(value) === JSON.stringify(sameSuitsArr[0]);
     }
+    console.log(sameSuits);
     return sameSuits;
 }
 
@@ -263,6 +265,7 @@ function checkSuits(playerHand) {
 function checkHands() {
     //console.log(compareSequentialCards(players[0].hand, players[1].hand));
     //   console.log(players[0].hand + communityPile);
+    console.log("zzzzzzzzzzzzzzzzzz");
     buildFinalHand();
     checkSequential();
 }
