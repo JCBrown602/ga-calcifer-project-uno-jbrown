@@ -31,18 +31,11 @@ for(let i = 0; i < 14; i++) {
 }
 // Assign a 'face value' and a suit to a new card object
 faceNames.forEach((faceName, idx) => {
-    //console.log(`${faceName}`);
     suits.forEach((suit) => {
         let newCard = {};
         newCard.faceName = faceName;
         newCard.faceValue = idx + 1;
         newCard.suit = suit;
-        // console.log("===============");
-        // console.log(`newCard.faceName - ${newCard.faceName}`);
-        // console.log(`faceName - ${faceName}`);
-        // console.log(`suit - ${suit}`);
-        // console.log(`faceValue - ${faceValues[idx + 1]}`);
-        // console.log(newCard);
         deck.push(newCard);
     });
 });
@@ -52,7 +45,6 @@ for (let i = 0; i < 4; i++) {
     ace = deck.shift();
     ace.faceValue = 14;
     deck.push(ace);
-    // console.log(`Name: ${ace.faceName}, Face Value: ${ace.faceValue}`);
 }
 
 // Players: Player, Computer1, Computer2, etc.
@@ -180,10 +172,7 @@ function dealCards(players) {
     console.log("Dealing...");
     for(let i = 0; i < players.length; i++) {
         let cardToDeal = deck.pop();
-        //console.log(`cardToDeal: ${cardToDeal.faceName} of ${cardToDeal.suit}`);
         players[i].hand.push(cardToDeal);
-        //console.log(`players[i] === ${players[i].name}
-        //     got a ${cardToDeal.faceName} of ${cardToDeal.suit} (${cardToDeal.faceValue} pts)`);
     }
     //console.log(players);
     return players;
@@ -191,7 +180,7 @@ function dealCards(players) {
 
 // Betting
 
-//=========================================================================
+//======================= Win Condition =========================
 // Win Condition / Scorekeeper
 function buildFinalHand() {
     players.forEach((player) => {
@@ -218,11 +207,6 @@ function checkSequential() {
 
 function countSequentialCards(playerHand) {
     let sequentialCount = 0;
-    // playerHand += communityPile.hand;
-    // communityPile[0].hand.forEach((card) => {
-    //     playerHand.push(card);
-    // })
-    // console.log(playerHand);
     
     // Sort the cards by value in ascending order
     playerHand.sort((a, b) => a.faceValue - b.faceValue);
@@ -235,19 +219,6 @@ function countSequentialCards(playerHand) {
     }
     return sequentialCount;
 }
-    
-// function compareSequentialCards(playerHand1, playerHand2) {
-//     const count1 = countSequentialCards(playerHand1);
-//     const count2 = countSequentialCards(playerHand2);
-    
-//     if (count1 > count2) {
-//         return "Player 1 has a higher number of sequential cards.";
-//     } else if (count2 > count1) {
-//         return "Player 2 has a higher number of sequential cards.";
-//     } else {
-//         return "Both players have the same number of sequential cards.";
-//     }
-// }
 
 function checkSuits(playerHand) {
     let sameSuitsArr = [];
@@ -257,14 +228,11 @@ function checkSuits(playerHand) {
         console.log(`suit: ${value}, playerHand.suit: ${sameSuitsArr[0]}`);
         return JSON.stringify(value) === JSON.stringify(sameSuitsArr[0]);
     }
-    console.log(sameSuits);
+    console.log(`Same suits: ${sameSuits}`);
     return sameSuits;
 }
 
-//   console.log(compareSequentialCards(playerHand1, playerHand2));
 function checkHands() {
-    //console.log(compareSequentialCards(players[0].hand, players[1].hand));
-    //   console.log(players[0].hand + communityPile);
     console.log("zzzzzzzzzzzzzzzzzz");
     buildFinalHand();
     checkSequential();
