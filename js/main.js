@@ -209,6 +209,9 @@ function checkSequential() {
         player.numSeq = countSequentialCards(player.hand);
         console.log(`Player: ${player.name} has 
             ${player.numSeq} sequential cards.`);
+
+        const suitsAre = checkSuits(player.hand);
+        console.log("All sequential: " + suitsAre);
     });
 }
 
@@ -232,18 +235,30 @@ function countSequentialCards(playerHand) {
     return sequentialCount;
 }
     
-function compareSequentialCards(playerHand1, playerHand2) {
-    const count1 = countSequentialCards(playerHand1);
-    const count2 = countSequentialCards(playerHand2);
+// function compareSequentialCards(playerHand1, playerHand2) {
+//     const count1 = countSequentialCards(playerHand1);
+//     const count2 = countSequentialCards(playerHand2);
     
-    if (count1 > count2) {
-        return "Player 1 has a higher number of sequential cards.";
-    } else if (count2 > count1) {
-        return "Player 2 has a higher number of sequential cards.";
-    } else {
-        return "Both players have the same number of sequential cards.";
+//     if (count1 > count2) {
+//         return "Player 1 has a higher number of sequential cards.";
+//     } else if (count2 > count1) {
+//         return "Player 2 has a higher number of sequential cards.";
+//     } else {
+//         return "Both players have the same number of sequential cards.";
+//     }
+// }
+
+function checkSuits(playerHand) {
+    let sameSuitsArr = [];
+    playerHand.forEach((card) => { sameSuitsArr.push(card.suit)});
+    let sameSuits = sameSuitsArr.every(myFunction);
+    function myFunction(value) {
+        console.log(`suit: ${value}, playerHand.suit: ${sameSuitsArr}`);
+        return value === playerHand.suit;
     }
+    return sameSuits;
 }
+
 //   console.log(compareSequentialCards(playerHand1, playerHand2));
 function checkHands() {
     //console.log(compareSequentialCards(players[0].hand, players[1].hand));
